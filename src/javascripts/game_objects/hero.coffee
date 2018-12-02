@@ -4,30 +4,33 @@ HeroSlash = require './hero_slash.coffee'
 class Hero extends GameObject
   constructor: (scene, x, y, key, frame) ->
     super scene, x, y, key, frame
-
+    
     @children = []
     @state = 'normal'
 
-    map = @scene.map
+    scene = @scene
     particleDeadZone = {
       contains: (x, y) ->
-        tile = map.getTileAtWorldXY(x, y)
+        tile = scene.map.getTileAtWorldXY(x, y)
 
         if tile
           tile.collides
         else
           false
     }
+    
+    particleDeathCallback = (particle) ->
+      scene.remainsGraphics.drawBlood(particle.x, particle.y)
 
     @bloodEmitter = @scene.add.particles('pixel').createEmitter(
       x: 100
       y: 200
-      lifespan: 1000
-      angle: { min: 300, max: 315 }
+      lifespan: 500
       speed: { min: 100, max: 250 }
       on: false
       gravityY: 100
       deathZone: { type: 'onEnter', source: particleDeadZone }
+      deathCallback: particleDeathCallback
     )
     @addChild(@bloodEmitter, @x, @y)
     
@@ -39,7 +42,7 @@ class Hero extends GameObject
           @x, @y, pointer.worldX, pointer.worldY
         ) * Phaser.Math.RAD_TO_DEG
 
-        @bloodEmitter.setAngle(min: angle - 20, max: angle + 20)
+        @bloodEmitter.setAngle(min: angle - 15, max: angle + 15)
     , @)
 
     @scene.add.updateList.add(@)
@@ -108,7 +111,7 @@ class Hero extends GameObject
     slashImage.hit()
 
     @scene.time.addEvent(
-      delay: 500
+      delay: 400
       callback: ->
         @slashActive = false
         @destroyChild(slashImage)

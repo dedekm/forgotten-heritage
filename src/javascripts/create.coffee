@@ -1,4 +1,5 @@
 Hero = require './game_objects/hero.coffee'
+RemainsGraphics = require './game_objects/remains_graphics.coffee'
 
 showDebug = false
 drawDebug = (map, debugGraphics) ->
@@ -42,6 +43,8 @@ module.exports = ->
     yoyo: true
   )
 
+  @remainsGraphics = @add.gameObject(RemainsGraphics)
+  
   @hero = @add.gameObject(Hero, 12 * 16, 57 * 16, 'gardener', 1)
   @physics.add.existing(@hero)
   @hero.body.setSize(12, 14, true)
@@ -56,4 +59,4 @@ module.exports = ->
     drawDebug(map, debugGraphics)
     return
 
-  @keys = this.input.keyboard.addKeys('w,s,a,d')
+  @keys = @input.keyboard.addKeys('w,s,a,d')
