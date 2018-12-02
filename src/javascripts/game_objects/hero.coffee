@@ -11,7 +11,12 @@ class Hero extends GameObject
     map = @scene.map
     particleDeadZone = {
       contains: (x, y) ->
-        map.getTileAtWorldXY(x, y).collides
+        tile = map.getTileAtWorldXY(x, y)
+
+        if tile
+          tile.collides
+        else
+          false
     }
 
     @bloodEmitter = @scene.add.particles('pixel').createEmitter(
