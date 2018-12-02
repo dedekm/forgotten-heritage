@@ -1,4 +1,5 @@
 GameObject = require './game_object.coffee'
+HeroSlash = require './hero_slash.coffee'
 
 class Hero extends GameObject
   constructor: (scene, x, y, key, frame) ->
@@ -75,13 +76,14 @@ class Hero extends GameObject
   pointerdown: (pointer) ->
     return if @slash
     
-    slashImage = @scene.add.sprite(@x, @y, 'slash')
+    slashImage = @scene.add.gameObject(HeroSlash, @x, @y, 'slash')
     slashImage.anims.play('slash')
 
     angle = Phaser.Math.Angle.Between(@x, @y, pointer.worldX, pointer.worldY)
     Phaser.Actions.RotateAroundDistance([slashImage], @, angle, 10)
     slashImage.angle = angle * Phaser.Math.RAD_TO_DEG
     @addChild(slashImage)
+    slashImage.hit()
 
     @scene.time.addEvent(
       delay: 600
