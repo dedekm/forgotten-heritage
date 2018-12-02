@@ -39,9 +39,15 @@ module.exports = ->
     repeat: -1
   )
   @anims.create(
+    key: 'run_insane'
+    frames: @anims.generateFrameNumbers('gardener', start: 2, end: 3)
+    frameRate: 10
+    repeat: -1
+  )
+  @anims.create(
     key: 'slash'
     frames: @anims.generateFrameNumbers('slash')
-    frameRate: 8
+    frameRate: 10
     repeat: -1,
     yoyo: true
   )

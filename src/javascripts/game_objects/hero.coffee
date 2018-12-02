@@ -5,8 +5,8 @@ class Hero extends GameObject
   constructor: (scene, x, y, key, frame) ->
     super scene, x, y, key, frame
 
-    @setSize(14, 16, true)
     @children = []
+    @state = 'normal'
 
     map = @scene.map
     particleDeadZone = {
@@ -25,13 +25,14 @@ class Hero extends GameObject
       lifespan: 1000
       angle: { min: 300, max: 315 }
       speed: { min: 100, max: 250 }
-      active: true
+      on: false
       gravityY: 100
       deathZone: { type: 'onEnter', source: particleDeadZone }
     )
     @addChild(@bloodEmitter, @x, @y)
     
     @scene.input.on('pointerdown', @pointerdown, @)
+    @scene.input.on('pointerup', @pointerup, @)
     @scene.input.on('pointermove', (pointer) ->
       if @bloodEmitter.active
         angle = Phaser.Math.Angle.Between(
@@ -69,28 +70,19 @@ class Hero extends GameObject
       move = true
     
     if move && !@anims.isPlaying
-      @anims.play('run')
+      @anims.play(if @insane() then 'run_insane' else 'run')
     else if !move && @anims.isPlaying
       @anims.stop()
 
   pointerdown: (pointer) ->
-    return if @slash
-    
-    slashImage = @scene.add.gameObject(HeroSlash, @x, @y, 'slash')
-    slashImage.anims.play('slash')
-
-    angle = Phaser.Math.Angle.Between(@x, @y, pointer.worldX, pointer.worldY)
-    Phaser.Actions.RotateAroundDistance([slashImage], @, angle, 10)
-    slashImage.angle = angle * Phaser.Math.RAD_TO_DEG
-    @addChild(slashImage)
-    slashImage.hit()
-
-    @scene.time.addEvent(
-      delay: 600
-      callback: ->
-        @destroyChild(slashImage)
-      callbackScope: @
-    )
+    if @insane()
+      @splash(pointer)
+    else
+      @slash(pointer)
+      
+  pointerup: (pointer) ->
+    if @insane()
+      @bloodEmitter.stop()
 
   addChild: (child, x, y) ->
     child.relativeX = (x || child.x) - @x
@@ -101,5 +93,36 @@ class Hero extends GameObject
     index = @children.indexOf(child)
     @children.splice(index, 1)
     child.destroy()
+  
+  slash: (pointer) ->
+    return if @slashActive
+    
+    slashImage = @scene.add.gameObject(HeroSlash, @x, @y, 'slash')
+    slashImage.anims.play('slash')
+
+    angle = Phaser.Math.Angle.Between(@x, @y, pointer.worldX, pointer.worldY)
+    Phaser.Actions.RotateAroundDistance([slashImage], @, angle, 10)
+    slashImage.angle = angle * Phaser.Math.RAD_TO_DEG
+    @addChild(slashImage)
+    @slashActive = true
+    slashImage.hit()
+
+    @scene.time.addEvent(
+      delay: 500
+      callback: ->
+        @slashActive = false
+        @destroyChild(slashImage)
+      callbackScope: @
+    )
+  
+  splash: (pointer) ->
+    @bloodEmitter.start()
+  
+  insane: ->
+    @state == 'insane'
+  
+  turnInsane: ->
+    @state = 'insane'
+    @setFrame(3)
     
 module.exports = Hero
