@@ -25,31 +25,13 @@ module.exports = ->
   @map.setCollisionBetween(54, 83)
 
   @anims.create(
-    key: 'left'
-    frames: @anims.generateFrameNumbers('player', start: 8, end: 9)
+    key: 'run'
+    frames: @anims.generateFrameNumbers('gardener', start: 0, end: 1)
     frameRate: 10
     repeat: -1
   )
-  @anims.create(
-    key: 'right'
-    frames: @anims.generateFrameNumbers('player', start: 1, end: 2)
-    frameRate: 10
-    repeat: -1
-  )
-  @anims.create(
-    key: 'up'
-    frames: @anims.generateFrameNumbers('player', start: 11, end: 13)
-    frameRate: 10
-    repeat: -1
-  )
-  @anims.create(
-    key: 'down'
-    frames: @anims.generateFrameNumbers('player', start: 4, end: 6)
-    frameRate: 10
-    repeat: -1
-  )
-  
-  @hero = @add.gameObject(Hero, 50, 100, 'player', 1)
+
+  @hero = @add.gameObject(Hero, 50, 100, 'gardener', 1)
   @physics.add.existing(@hero)
   
   # Set up the player to collide with the tilemap layer. Alternatively, you can manually run
