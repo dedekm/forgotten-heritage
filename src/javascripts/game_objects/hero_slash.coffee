@@ -3,12 +3,11 @@ class HeroSlash extends Phaser.GameObjects.Sprite
     super scene, x, y, key, frame
 
   hit: ->
-    tileX = @scene.bushes.worldToTileX(@x)
-    tileY = @scene.bushes.worldToTileY(@y)
-    tile = @scene.bushes.getTileAt(tileX, tileY)
-
-    # TODO: use bush tile
-    if tile && tile.index == 59
-      @scene.bushes.putTileAt(41, tileX, tileY)
+    tileX = @scene.map.worldToTileX(@x)
+    tileY = @scene.map.worldToTileY(@y)
+    tile = @scene.map.getTileAt(tileX, tileY)
+      
+    if tile && [196, 251].includes(tile.index)
+      @scene.map.putTileAt(231, tileX, tileY)
 
 module.exports = HeroSlash
