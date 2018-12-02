@@ -14,15 +14,23 @@ module.exports = ->
   @keys = @input.keyboard.addKeys('W,S,A,D')
 
   @map = @make.tilemap(
-    key: 'map'
+    key: 'map_base'
     tileWidth: 16
     tileHeight: 16
   )
 
   tileset = @map.addTilesetImage('tiles')
   layer = @map.createStaticLayer(0, tileset, 0, 0)
-
   @map.setCollisionBetween(54, 83)
+
+  @bushes = @make.tilemap(
+    key: 'map_bushes'
+    tileWidth: 16
+    tileHeight: 16
+  )
+  tileset = @bushes.addTilesetImage('tiles')
+  bushesLayer =  @bushes.createDynamicLayer(0, tileset, 0, 0)
+  @bushes.setCollisionBetween(54, 83)
 
   @anims.create(
     key: 'run'
@@ -44,6 +52,7 @@ module.exports = ->
   # Set up the player to collide with the tilemap layer. Alternatively, you can manually run
   # collisions in update via: this.physics.world.collide(player, layer)
   @physics.add.collider(@hero, layer)
+  @physics.add.collider(@hero, bushesLayer)
   @cameras.main.setBounds(0, 0, @map.widthInPixels, @map.heightInPixels)
   @cameras.main.startFollow(@hero)
 
