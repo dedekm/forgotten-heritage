@@ -6,7 +6,6 @@ class Hero extends GameObject
 
     @setSize(14, 16, true)
     @children = []
-    @scene.input.on('pointerdown', @pointerdown, @)
 
     map = @scene.map
     particleDeadZone = {
@@ -31,9 +30,12 @@ class Hero extends GameObject
     )
     @addChild(@bloodEmitter, @x, @y)
     
+    @scene.input.on('pointerdown', @pointerdown, @)
     @scene.input.on('pointermove', (pointer) ->
       if @bloodEmitter.active
-        angle = Phaser.Math.Angle.Between(@x, @y, pointer.x, pointer.y) * Phaser.Math.RAD_TO_DEG
+        angle = Phaser.Math.Angle.Between(
+          @x, @y, pointer.worldX, pointer.worldY
+        ) * Phaser.Math.RAD_TO_DEG
 
         @bloodEmitter.setAngle(min: angle - 20, max: angle + 20)
     , @)
@@ -72,10 +74,12 @@ class Hero extends GameObject
 
   pointerdown: (pointer) ->
     return if @slash
+    
+    slashImage = @scene.add.sprite(@x, @y, 'slash')
+    slashImage.anims.play('slash')
 
-    slashImage = @scene.add.image(@x, @y, 'arrow')
-    angle = Phaser.Math.Angle.Between(@x, @y, pointer.x, pointer.y)
-    Phaser.Actions.RotateAroundDistance([slashImage], @, angle, 50)
+    angle = Phaser.Math.Angle.Between(@x, @y, pointer.worldX, pointer.worldY)
+    Phaser.Actions.RotateAroundDistance([slashImage], @, angle, 12)
     slashImage.angle = angle * Phaser.Math.RAD_TO_DEG
     @addChild(slashImage)
 
