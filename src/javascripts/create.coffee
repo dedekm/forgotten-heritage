@@ -13,15 +13,16 @@ drawDebug = (map, debugGraphics) ->
 module.exports = ->
   @keys = @input.keyboard.addKeys('W,S,A,D')
 
-  map = @make.tilemap(
+  @map = @make.tilemap(
     key: 'map'
     tileWidth: 16
     tileHeight: 16
   )
-  tileset = map.addTilesetImage('tiles')
-  layer = map.createStaticLayer(0, tileset, 0, 0)
-  
-  map.setCollisionBetween(54, 83)
+
+  tileset = @map.addTilesetImage('tiles')
+  layer = @map.createStaticLayer(0, tileset, 0, 0)
+
+  @map.setCollisionBetween(54, 83)
 
   @anims.create(
     key: 'left'
@@ -54,7 +55,7 @@ module.exports = ->
   # Set up the player to collide with the tilemap layer. Alternatively, you can manually run
   # collisions in update via: this.physics.world.collide(player, layer)
   @physics.add.collider(@hero, layer)
-  @cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels)
+  @cameras.main.setBounds(0, 0, @map.widthInPixels, @map.heightInPixels)
   @cameras.main.startFollow(@hero)
 
   debugGraphics = @add.graphics()
