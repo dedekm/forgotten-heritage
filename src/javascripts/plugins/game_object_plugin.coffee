@@ -5,8 +5,6 @@ class GameObjectPlugin extends Phaser.Plugins.BasePlugin
 
   createGameObject: (klass, x, y, key, frame) ->
     object = new klass(@scene, x, y, key, frame)
-    @displayList.add(object)
-    
-    object
+    @scene.add.existing(object)
 
 module.exports = GameObjectPlugin
