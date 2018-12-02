@@ -7,12 +7,13 @@ update = require './update.coffee'
 
 config =
   type: Phaser.AUTO
-  width: 800
-  height: 600
+  width: 288
+  height: 192
   pixelArt: true
+  zoom: 3
   physics:
     default: 'arcade'
-    debug: true
+    arcade: { debug: true }
   plugins:
     global: [
         { key: 'GameObjectPlugin', plugin: GameObjectPlugin, start: true }
