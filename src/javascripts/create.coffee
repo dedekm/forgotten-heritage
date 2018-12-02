@@ -30,6 +30,13 @@ module.exports = ->
     frameRate: 10
     repeat: -1
   )
+  @anims.create(
+    key: 'slash'
+    frames: @anims.generateFrameNumbers('slash')
+    frameRate: 8
+    repeat: -1,
+    yoyo: true
+  )
 
   @hero = @add.gameObject(Hero, 50, 100, 'gardener', 1)
   @physics.add.existing(@hero)

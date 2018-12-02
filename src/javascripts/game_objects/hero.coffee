@@ -79,12 +79,12 @@ class Hero extends GameObject
     slashImage.anims.play('slash')
 
     angle = Phaser.Math.Angle.Between(@x, @y, pointer.worldX, pointer.worldY)
-    Phaser.Actions.RotateAroundDistance([slashImage], @, angle, 12)
+    Phaser.Actions.RotateAroundDistance([slashImage], @, angle, 10)
     slashImage.angle = angle * Phaser.Math.RAD_TO_DEG
     @addChild(slashImage)
 
     @scene.time.addEvent(
-      delay: 400
+      delay: 600
       callback: ->
         @destroyChild(slashImage)
       callbackScope: @
