@@ -11,12 +11,6 @@ class Enemy extends Character
 
     @needsTint = true
   
-  die: ->
-    index = @scene.enemies.indexOf(@)
-    @scene.enemies.splice(index, 1)
-
-    super.die()
-
   preUpdate: (time, delta) ->
     super.preUpdate(time, delta)
 
