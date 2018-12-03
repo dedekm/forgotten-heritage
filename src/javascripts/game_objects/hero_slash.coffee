@@ -8,6 +8,7 @@ class HeroSlash extends Phaser.GameObjects.Sprite
     tile = @scene.map.getTileAt(tileX, tileY)
       
     if tile && [196, 251].includes(tile.index)
+      @scene.sounds.slashBush.play()
       @scene.map.putTileAt(231, tileX, tileY)
 
 module.exports = HeroSlash

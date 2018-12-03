@@ -1,6 +1,7 @@
 Hero = require './game_objects/hero.coffee'
 Enemy = require './game_objects/enemy.coffee'
 RemainsGraphics = require './game_objects/remains_graphics.coffee'
+Sounds = require './game_objects/sounds.coffee'
 
 showDebug = false
 drawDebug = (map, debugGraphics) ->
@@ -13,7 +14,11 @@ drawDebug = (map, debugGraphics) ->
   return
 
 module.exports = ->
-  @keys = @input.keyboard.addKeys('W,S,A,D')
+  # @keys = @input.keyboard.addKeys('w,s,a,d')
+  # DEBUG only
+  @keys = @input.keyboard.addKeys('w,s,a,d,q')
+  
+  @sounds = new Sounds(@)
 
   @map = @make.tilemap(
     key: 'map'
@@ -85,8 +90,3 @@ module.exports = ->
     showDebug = !showDebug
     drawDebug(map, debugGraphics)
     return
-
-  @keys = @input.keyboard.addKeys('w,s,a,d')
-  
-  # DEBUG only
-  @keys = @input.keyboard.addKeys('w,s,a,d,q')
