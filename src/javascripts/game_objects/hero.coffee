@@ -11,8 +11,13 @@ class Hero extends Character
     scene = @scene
     particleDeadZone = {
       contains: (x, y) ->
+        for enemy in scene.enemies
+          if enemy.body.hitTest(x, y)
+            enemy.hit(0.1)
+            return true
+        
         tile = scene.map.getTileAtWorldXY(x, y)
-
+        
         if tile
           tile.collides
         else

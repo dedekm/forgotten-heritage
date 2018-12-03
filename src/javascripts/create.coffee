@@ -1,4 +1,5 @@
 Hero = require './game_objects/hero.coffee'
+Enemy = require './game_objects/enemy.coffee'
 RemainsGraphics = require './game_objects/remains_graphics.coffee'
 
 showDebug = false
@@ -44,6 +45,13 @@ module.exports = ->
   )
 
   @remainsGraphics = @add.gameObject(RemainsGraphics)
+  
+  @enemies = []
+  enemy = @add.gameObject(Enemy, 15 * 16, 5 * 16, 'aztec1', 0)
+  @physics.add.existing(enemy)
+  enemy.body.setSize(12, 20)
+  enemy.body.setOffset(4, 4)
+  @enemies.push(enemy)
   
   @hero = @add.gameObject(Hero, 12 * 16, 57 * 16, 'gardener', 1)
   @physics.add.existing(@hero)

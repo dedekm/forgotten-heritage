@@ -6,6 +6,7 @@ module.exports = ->
   @load.tilemapTiledJSON('map', '/tilemaps/map.json')
   @load.spritesheet('gardener', '/images/gardener_14x16.png', frameWidth: 14, frameHeight: 16)
   @load.spritesheet('slash', '/images/slash_7x16.png', frameWidth: 7, frameHeight: 16)
+  @load.spritesheet('aztec1', '/images/aztec1_16x24.png', frameWidth: 16, frameHeight: 24)
 
   graphics = @add.graphics()
   graphics.fillStyle(0xff0000, 1)
