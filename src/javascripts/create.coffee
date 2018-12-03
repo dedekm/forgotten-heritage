@@ -53,6 +53,12 @@ module.exports = ->
     repeat: -1
   )
   @anims.create(
+    key: 'aztec1_run'
+    frames: @anims.generateFrameNumbers('aztec1')
+    frameRate: 7
+    repeat: -1
+  )
+  @anims.create(
     key: 'slash'
     frames: @anims.generateFrameNumbers('slash')
     frameRate: 10
