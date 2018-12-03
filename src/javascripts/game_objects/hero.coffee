@@ -59,7 +59,7 @@ class Hero extends Character
       deathZone: { type: 'onEnter', source: particleDeadZone }
       deathCallback: particleDeathCallback
     )
-    @addChild(@bloodEmitter, @x, @y)
+    @addChild(@bloodEmitter, @x, @y - 1)
     
     @scene.input.mouse.disableContextMenu()
     @scene.input.on('pointerdown', @pointerdown, @)
@@ -82,6 +82,9 @@ class Hero extends Character
     
     for child in @children
       child.setPosition(@x + child.relativeX, @y + child.relativeY)
+    
+    if @insane()
+      @bloodEmitter.x.propertyValue += if @flipX then 6 else -6
     
     @body.setVelocity 0
     
