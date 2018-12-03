@@ -8,6 +8,9 @@ class Hero extends Character
     @children = []
     @state = 'normal'
 
+    @healthBar = @scene.add.graphics()
+    @healthBar.setScrollFactor(0)
+    
     scene = @scene
     particleDeadZone = {
       contains: (x, y) ->
@@ -54,6 +57,8 @@ class Hero extends Character
     
   preUpdate: (time, delta) ->
     super.preUpdate(time, delta)
+    
+    @drawHealthBar()
     
     for child in @children
       child.setPosition(@x + child.relativeX, @y + child.relativeY)
@@ -132,5 +137,16 @@ class Hero extends Character
   turnInsane: ->
     @state = 'insane'
     @setFrame(3)
+  
+  drawHealthBar: () ->
+    w = (@scene.cameras.main.worldView.width - 8) * @health
+    @healthBar.clear()
+    @healthBar.fillStyle(0xff0000)
+    @healthBar.fillRect(
+      4,
+      @scene.cameras.main.worldView.height - 6,
+      w,
+      2
+    )
     
 module.exports = Hero
