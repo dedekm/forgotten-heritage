@@ -1,5 +1,5 @@
 Hero = require './game_objects/hero.coffee'
-Enemy = require './game_objects/enemy.coffee'
+EnemyEmitter = require './game_objects/enemy_emitter.coffee'
 RemainsGraphics = require './game_objects/remains_graphics.coffee'
 Sounds = require './game_objects/sounds.coffee'
 
@@ -63,14 +63,9 @@ module.exports = ->
   @remainsGraphics = @add.gameObject(RemainsGraphics)
   
   @enemies = @add.group()
+  @enemyEmitter = new EnemyEmitter(@, 15 * 16, 5 * 16)
   
-  enemy = @add.gameObject(Enemy, 15 * 16, 5 * 16, 'aztec1', 0)
-  @physics.add.existing(enemy)
-  enemy.body.setSize(12, 20)
-  enemy.body.setOffset(4, 4)
-  enemy.body.immovable = true
-  
-  @enemies.add(enemy)
+  @enemyEmitter.createEnemy()
   
   # DEBUG only
   @hero = @add.gameObject(Hero, 12 * 16, 5 * 16, 'gardener', 1)
