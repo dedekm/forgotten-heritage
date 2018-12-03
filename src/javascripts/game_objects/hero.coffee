@@ -1,5 +1,6 @@
 Character = require './character.coffee'
 HeroSlash = require './hero_slash.coffee'
+HeroGrab = require './hero_grab.coffee'
 
 class Hero extends Character
   constructor: (scene, x, y, key, frame) ->
@@ -7,7 +8,25 @@ class Hero extends Character
     
     @children = []
     @state = 'normal'
-
+    
+    @on('animationcomplete', (sprite) ->
+      if sprite.key == 'grab'
+        @anims.play('hold')
+        @scene.time.addEvent(
+          delay: 200
+          callback: ->
+            @health += 0.1
+            @paused = false
+            @anims.stop()
+            @setFrame(3)
+          callbackScope: @
+        )
+    , @)
+    
+    @slashReady = true
+    @grabReady = true
+    @grabZone = @scene.add.gameObject(HeroGrab, @x, @y)
+        
     @healthBar = @scene.add.graphics()
     @healthBar.setScrollFactor(0)
     
@@ -42,6 +61,7 @@ class Hero extends Character
     )
     @addChild(@bloodEmitter, @x, @y)
     
+    @scene.input.mouse.disableContextMenu()
     @scene.input.on('pointerdown', @pointerdown, @)
     @scene.input.on('pointerup', @pointerup, @)
     @scene.input.on('pointermove', (pointer) ->
@@ -64,34 +84,41 @@ class Hero extends Character
       child.setPosition(@x + child.relativeX, @y + child.relativeY)
     
     @body.setVelocity 0
-    # Horizontal movement
-    if @scene.keys.a.isDown
-      @body.setVelocityX(-100)
-      @flipX = false
-      move = true
-    else if @scene.keys.d.isDown
-      @body.setVelocityX(100)
-      @flipX = true
-      move = true
-
-    # Vertical movement
-    if @scene.keys.w.isDown
-      @body.setVelocityY(-100)
-      move = true
-    else if @scene.keys.s.isDown
-      @body.setVelocityY(100)
-      move = true
     
-    if move && !@anims.isPlaying
-      @anims.play(if @insane() then 'run_insane' else 'run')
-    else if !move && @anims.isPlaying
-      @anims.stop()
+    unless @paused
+      # Horizontal movement
+      if @scene.keys.a.isDown
+        @body.setVelocityX(-100)
+        @flipX = false
+        move = true
+      else if @scene.keys.d.isDown
+        @body.setVelocityX(100)
+        @flipX = true
+        move = true
+
+      # Vertical movement
+      if @scene.keys.w.isDown
+        @body.setVelocityY(-100)
+        move = true
+      else if @scene.keys.s.isDown
+        @body.setVelocityY(100)
+        move = true
+      
+      if move && !@anims.isPlaying
+        @anims.play(if @insane() then 'run_insane' else 'run')
+      else if !move && @anims.isPlaying
+        @anims.stop()
 
   pointerdown: (pointer) ->
-    if @insane()
-      @splash(pointer)
-    else
-      @slash(pointer)
+    unless @paused
+      if pointer.leftButtonDown()
+        if @insane()
+          @splash(pointer)
+        else
+          @slash(pointer)
+      
+      if pointer.rightButtonDown() && @insane()
+        @grabHeart(pointer)
       
   pointerup: (pointer) ->
     if @insane()
@@ -108,22 +135,19 @@ class Hero extends Character
     child.destroy()
   
   slash: (pointer) ->
-    return if @slashActive
+    return unless @slashReady
     
     slashImage = @scene.add.gameObject(HeroSlash, @x, @y, 'slash')
     slashImage.anims.play('slash')
-
-    angle = Phaser.Math.Angle.Between(@x, @y, pointer.worldX, pointer.worldY)
-    Phaser.Actions.RotateAroundDistance([slashImage], @, angle, 10)
-    slashImage.angle = angle * Phaser.Math.RAD_TO_DEG
+    @rotateObjectInMouseDirection(slashImage, pointer)
     @addChild(slashImage)
-    @slashActive = true
+    @slashReady = false
     slashImage.hit()
 
     @scene.time.addEvent(
       delay: 400
       callback: ->
-        @slashActive = false
+        @slashReady = true
         @destroyChild(slashImage)
       callbackScope: @
     )
@@ -131,12 +155,32 @@ class Hero extends Character
   splash: (pointer) ->
     @bloodEmitter.start()
   
+  grabHeart: (pointer) ->
+    @grabZone.setPosition(@x, @y)
+    @rotateObjectInMouseDirection(@grabZone, pointer, false)
+    @grabReady = false
+    
+    
+    @scene.time.addEvent(
+      delay: 100
+      callback: ->
+        @grabZone.moveAway()
+        @grabReady = true
+      callbackScope: @
+    )
+  
   insane: ->
     @state == 'insane'
   
   turnInsane: ->
     @state = 'insane'
     @setFrame(3)
+  
+  rotateObjectInMouseDirection: (object, pointer, changeAngle = true) ->
+    angle = Phaser.Math.Angle.Between(@x, @y, pointer.worldX, pointer.worldY)
+    Phaser.Actions.RotateAroundDistance([object], @, angle, 10)
+    if changeAngle
+      object.angle = angle * Phaser.Math.RAD_TO_DEG
   
   drawHealthBar: () ->
     w = (@scene.cameras.main.worldView.width - 8) * @health
