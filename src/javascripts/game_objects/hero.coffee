@@ -1,7 +1,7 @@
-GameObject = require './game_object.coffee'
+Character = require './character.coffee'
 HeroSlash = require './hero_slash.coffee'
 
-class Hero extends GameObject
+class Hero extends Character
   constructor: (scene, x, y, key, frame) ->
     super scene, x, y, key, frame
     
