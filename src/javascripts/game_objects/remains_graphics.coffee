@@ -7,7 +7,6 @@ class RemainsGraphics extends Phaser.GameObjects.Graphics
     @fillRect(x, y, w, h)
     
   particleDeathCallback: (particle) ->
-    console.log 'a'
     @drawBlood(particle.x, particle.y)
 
 module.exports = RemainsGraphics

@@ -73,6 +73,10 @@ module.exports = ->
   
   @enemyEmitter.createEnemy()
   
+  @hand = @add.image(12 * 16, 10 * 16, 'hand')
+  @physics.add.existing(@hand)
+  @hand.body.setSize(16, 16, true)
+  
   # DEBUG only
   @hero = @add.gameObject(Hero, 12 * 16, 5 * 16, 'gardener', 1)
   # @hero = @add.gameObject(Hero, 12 * 16, 57 * 16, 'gardener', 1)

@@ -3,6 +3,7 @@ module.exports = ->
   @game.canvas.style.height = (@game.config.height * @game.config.zoom).toString() + 'px'
   
   @load.image('tiles', '/tilemaps/tileset.png')
+  @load.image('hand', '/images/hand_7x13.png')
   @load.tilemapTiledJSON('map', '/tilemaps/map.json')
   @load.spritesheet('gardener', '/images/gardener_14x19.png', frameWidth: 14, frameHeight: 19)
   @load.spritesheet('slash', '/images/slash_7x16.png', frameWidth: 7, frameHeight: 16)
