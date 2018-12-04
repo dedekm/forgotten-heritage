@@ -1,5 +1,12 @@
 body {
   padding: 0;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif; }
+  font: 12px Verdana, sans-serif;
+  background: black;
+  color: white; }
+
+canvas {
+  margin-top: 0.5rem;
+  display: block;
+  margin: 0 auto; }
 
 /*# sourceMappingURL=style.css.map */
