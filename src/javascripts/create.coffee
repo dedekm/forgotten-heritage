@@ -16,9 +16,7 @@ drawDebug = (map, debugGraphics) ->
   return
 
 module.exports = ->
-  # @keys = @input.keyboard.addKeys('w,s,a,d')
-  # DEBUG only
-  @keys = @input.keyboard.addKeys('w,s,a,d,q')
+  @keys = @input.keyboard.addKeys('w,s,a,d')
   
   @sounds = new Sounds(@)
 
@@ -72,17 +70,14 @@ module.exports = ->
   @remainsGraphics = @add.gameObject(RemainsGraphics)
   
   @enemies = @add.group()
-  @enemyEmitter = new EnemyEmitter(@, 15 * 16, 5 * 16)
-  
-  @enemyEmitter.createEnemy()
+  # @enemyEmitter = new EnemyEmitter(@, 15 * 16, 5 * 16)
+  # @enemyEmitter.createEnemy()
   
   @hand = @add.image(22 * 16 - 8, 11 * 16 - 8, 'hand')
   @physics.add.existing(@hand)
   @hand.body.setSize(16, 16, true)
   
-  # DEBUG only
-  @hero = @add.gameObject(Hero, 12 * 16, 5 * 16, 'gardener', 1)
-  # @hero = @add.gameObject(Hero, 12 * 16, 57 * 16, 'gardener', 1)
+  @hero = @add.gameObject(Hero, 12 * 16, 52 * 16, 'gardener', 1)
   @physics.add.existing(@hero)
   @hero.body.setSize(12, 14)
   @hero.body.setOffset(2, 4)
@@ -93,9 +88,3 @@ module.exports = ->
   )
   @cameras.main.setBounds(0, 0, @map.widthInPixels, @map.heightInPixels)
   @cameras.main.startFollow(@hero)
-  
-  debugGraphics = @add.graphics()
-  @input.keyboard.on 'keydown_C', (event) ->
-    showDebug = !showDebug
-    drawDebug(map, debugGraphics)
-    return

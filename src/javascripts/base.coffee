@@ -13,7 +13,6 @@ config =
   zoom: 3
   physics:
     default: 'arcade'
-    arcade: { debug: true }
   plugins:
     global: [
         { key: 'GameObjectPlugin', plugin: GameObjectPlugin, start: true }
