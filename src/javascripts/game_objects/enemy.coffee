@@ -12,6 +12,27 @@ class Enemy extends Character
 
     @needsTint = true
   
+  die: ->
+    bloodParticle = @scene.add.particles('pixel')
+    
+    emitter = bloodParticle.createEmitter(
+      x: @x
+      y: @y
+      lifespan: 200
+      speed: { min: 10, max: 100 }
+      gravityY: 150
+      deathCallback: @scene.remainsGraphics.particleDeathCallback
+      deathCallbackScope: @scene.remainsGraphics
+    )
+    
+    @scene.time.addEvent(
+      delay: 300
+      callback: ->
+        bloodParticle.destroy()
+    )
+    
+    super.die()
+  
   moveToHero: ->
     if @scene.hero
       velocity = new (Phaser.Math.Vector2)

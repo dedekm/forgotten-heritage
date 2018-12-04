@@ -46,9 +46,6 @@ class Hero extends Character
           false
     }
     
-    particleDeathCallback = (particle) ->
-      scene.remainsGraphics.drawBlood(particle.x, particle.y)
-
     @bloodEmitter = @scene.add.particles('pixel').createEmitter(
       x: 100
       y: 200
@@ -57,7 +54,8 @@ class Hero extends Character
       on: false
       gravityY: 100
       deathZone: { type: 'onEnter', source: particleDeadZone }
-      deathCallback: particleDeathCallback
+      deathCallback: @scene.remainsGraphics.particleDeathCallback
+      deathCallbackScope: @scene.remainsGraphics
     )
     @addChild(@bloodEmitter, @x, @y - 1)
     
