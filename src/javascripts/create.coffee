@@ -93,3 +93,5 @@ module.exports = ->
   )
   @cameras.main.setBounds(0, 0, @map.widthInPixels, @map.heightInPixels)
   @cameras.main.startFollow(@hero)
+  
+  @sounds.background.garden.play(loop: true, volume: 1)

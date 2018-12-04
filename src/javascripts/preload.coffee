@@ -14,6 +14,9 @@ module.exports = ->
   graphics.fillRect(0, 0, 2, 2)
   texture = graphics.generateTexture('pixel', 2, 2)
 
+  @load.audio('background_garden', ['sounds/background_garden.ogg', 'sounds/background_garden.mp3'])
+  @load.audio('background_jungle', ['sounds/background_jungle.ogg', 'sounds/background_jungle.mp3'])
+  @load.audio('background_voice', ['sounds/background_voice.ogg', 'sounds/background_voice.mp3'])
   @load.audio('run', ['sounds/run.ogg', 'sounds/run.mp3'])
   @load.audio('slash_air', ['sounds/slash_air.ogg', 'sounds/slash_air.mp3'])
   @load.audio('slash_bush', ['sounds/slash_bush.ogg', 'sounds/slash_bush.mp3'])
