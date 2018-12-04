@@ -182,19 +182,42 @@ class Hero extends Character
   
   insane: ->
     @state == 'insane'
+
+  dead: ->
+    @state == 'dead'
   
   turnInsane: ->
-    @scene.enemyEmitter[0].createEnemy()
+    @paused = true
+    @scene.sounds.scream.play(volume: 0.7)
     
-    for emitter in @scene.enemyEmitter
-      emitter.active = true
+    graphics = @scene.add.graphics()
+    graphics.fillStyle(0xff1111)
+    graphics.fillRect(
+      @scene.cameras.main.worldView.x,
+      @scene.cameras.main.worldView.y,
+      @scene.cameras.main.worldView.width,
+      @scene.cameras.main.worldView.height,
+    )
     
+    @scene.time.addEvent(
+      delay: 500
+      callback: ->
+        @paused = false
+        @scene.sounds.background.metal.play(loop: true)
+        
+        graphics.destroy()
+        for emitter in @scene.enemyEmitters
+          emitter.active = true
+      callbackScope: @
+    )
+    
+    @scene.enemyEmitters[0].createEnemy()
     @healthBar.visible = true
     @state = 'insane'
     @setFrame(3)
   
   die: ->
-    for emitter in @scene.enemyEmitter
+    for emitter in @scene.enemyEmitters
       emitter.active = false
     
     bloodParticle = @scene.add.particles('pixel')

@@ -71,7 +71,7 @@ module.exports = ->
   
   @enemies = @add.group()
   
-  @enemyEmitter = [
+  @enemyEmitters = [
     new EnemyEmitter(@, 7 * 16, 5 * 16),
     new EnemyEmitter(@, 9 * 16, 25 * 16),
     new EnemyEmitter(@, 27 * 16, 4 * 16),
