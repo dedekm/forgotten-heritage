@@ -14,4 +14,5 @@ module.exports = ->
   graphics.fillRect(0, 0, 2, 2)
   texture = graphics.generateTexture('pixel', 2, 2)
 
+  @load.audio('slash_air', ['sounds/slash_air.ogg', 'sounds/slash_air.mp3'])
   @load.audio('slash_bush', ['sounds/slash_bush.ogg', 'sounds/slash_bush.mp3'])
