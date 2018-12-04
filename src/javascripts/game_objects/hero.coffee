@@ -28,6 +28,7 @@ class Hero extends Character
     @grabZone = @scene.add.gameObject(HeroGrab, @x, @y)
         
     @healthBar = @scene.add.graphics()
+    @healthBar.visible = false
     @healthBar.setScrollFactor(0)
     
     scene = @scene
@@ -76,12 +77,11 @@ class Hero extends Character
   preUpdate: (time, delta) ->
     super.preUpdate(time, delta)
     
-    @drawHealthBar()
-    
     for child in @children
       child.setPosition(@x + child.relativeX, @y + child.relativeY)
     
     if @insane()
+      @drawHealthBar()
       @bloodEmitter.x.propertyValue += if @flipX then 6 else -6
     
     @body.setVelocity 0
@@ -174,6 +174,7 @@ class Hero extends Character
     @state == 'insane'
   
   turnInsane: ->
+    @healthBar.visible = true
     @state = 'insane'
     @setFrame(3)
   
