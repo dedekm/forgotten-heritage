@@ -33,11 +33,11 @@ class HeroSlash extends Phaser.GameObjects.Sprite
   hit: ->
     tileX = @scene.map.worldToTileX(@x)
     tileY = @scene.map.worldToTileY(@y)
-    tile = @scene.map.getTileAt(tileX, tileY)
+    tile = @scene.map.bushes.getTileAt(tileX, tileY)
       
     if tile && [196, 251].includes(tile.index)
       @scene.sounds.slashBush.play()
-      @scene.map.putTileAt(231, tileX, tileY)
+      @scene.map.bushes.putTileAt(231, tileX, tileY)
     else
       @scene.sounds.slashAir.play()
 

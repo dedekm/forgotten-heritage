@@ -198,6 +198,8 @@ class Hero extends Character
       @scene.cameras.main.worldView.width,
       @scene.cameras.main.worldView.height,
     )
+    @scene.map.walls.setVisible(true)
+    @scene.physics.add.collider(@scene.map.walls, [@, @scene.enemies])
     
     @scene.time.addEvent(
       delay: 500
