@@ -39,12 +39,13 @@ class Hero extends Character
             enemy.hit(0.1)
             return true
         
-        tile = scene.map.getTileAtWorldXY(x, y)
-        
-        if tile
-          tile.collides
-        else
-          false
+        # TODO
+        # tile = scene.map.getTileAtWorldXY(x, y)
+        #
+        # if tile
+        #   tile.collides
+        # else
+        #   false
     }
     
     @bloodEmitter = @scene.add.particles('pixel').createEmitter(
