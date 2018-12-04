@@ -110,8 +110,10 @@ class Hero extends Character
       
       if move && !@anims.isPlaying
         @anims.play(if @insane() then 'run_insane' else 'run')
+        @scene.sounds.run.play(loop: true)
       else if !move && @anims.isPlaying
         @anims.stop()
+        @scene.sounds.run.stop()
 
   pointerdown: (pointer) ->
     unless @paused

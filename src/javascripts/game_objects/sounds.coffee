@@ -4,6 +4,7 @@ class Sounds extends Object
     
     @scene = scene
     
+    @run = @scene.sound.add('run')
     @slashBush = @scene.sound.add('slash_bush')
     @slashAir = @scene.sound.add('slash_air')
     
