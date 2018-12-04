@@ -177,6 +177,27 @@ class Hero extends Character
     @state = 'insane'
     @setFrame(3)
   
+  die: ->
+    bloodParticle = @scene.add.particles('pixel')
+    emitter = bloodParticle.createEmitter(
+      x: @x
+      y: @y
+      lifespan: 400
+      speed: { min: 10, max: 100 }
+      frequency: 3
+      gravityY: 150
+      deathCallback: @scene.remainsGraphics.particleDeathCallback
+      deathCallbackScope: @scene.remainsGraphics
+    )
+    
+    @scene.time.addEvent(
+      delay: 3000
+      callback: ->
+        bloodParticle.destroy()
+    )
+    # FIXME: errors after death
+    super.die()
+  
   rotateObjectInMouseDirection: (object, pointer, changeAngle = true) ->
     angle = Phaser.Math.Angle.Between(@x, @y, pointer.worldX, pointer.worldY)
     Phaser.Actions.RotateAroundDistance([object], @, angle, 10)
