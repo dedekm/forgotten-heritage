@@ -36,7 +36,7 @@ class Hero extends Character
       contains: (x, y) ->
         for enemy in scene.enemies.getChildren()
           if enemy.body.hitTest(x, y)
-            enemy.hit(0.1)
+            enemy.hit(0.075)
             return true
         
         # TODO
@@ -82,6 +82,8 @@ class Hero extends Character
       child.setPosition(@x + child.relativeX, @y + child.relativeY)
     
     if @insane()
+      if @splashing
+        @health -= 0.0025
       @drawHealthBar()
       @bloodEmitter.x.propertyValue += if @flipX then 6 else -6
     
@@ -124,6 +126,7 @@ class Hero extends Character
       
   pointerup: (pointer) ->
     if @insane()
+      @splashing = false
       @bloodEmitter.stop()
 
   addChild: (child, x, y) ->
@@ -155,21 +158,25 @@ class Hero extends Character
     )
   
   splash: (pointer) ->
+    @splashing = true
     @bloodEmitter.start()
   
   grabHeart: (pointer) ->
-    @grabZone.setPosition(@x, @y)
-    @rotateObjectInMouseDirection(@grabZone, pointer, false)
-    @grabReady = false
+    if @insane()
+      @splashing = false
+      @bloodEmitter.stop()
+      @grabZone.setPosition(@x, @y)
+      @rotateObjectInMouseDirection(@grabZone, pointer, false)
+      @grabReady = false
     
     
-    @scene.time.addEvent(
-      delay: 100
-      callback: ->
-        @grabZone.moveAway()
-        @grabReady = true
-      callbackScope: @
-    )
+      @scene.time.addEvent(
+        delay: 100
+        callback: ->
+          @grabZone.moveAway()
+          @grabReady = true
+        callbackScope: @
+      )
   
   insane: ->
     @state == 'insane'
@@ -197,6 +204,11 @@ class Hero extends Character
       callback: ->
         bloodParticle.destroy()
     )
+    
+    @state = 'dead'
+    @splashing = false
+    @bloodEmitter.stop()
+    
     # FIXME: errors after death
     super.die()
   
