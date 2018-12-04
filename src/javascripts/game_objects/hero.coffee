@@ -182,11 +182,19 @@ class Hero extends Character
     @state == 'insane'
   
   turnInsane: ->
+    @scene.enemyEmitter[0].createEnemy()
+    
+    for emitter in @scene.enemyEmitter
+      emitter.active = true
+    
     @healthBar.visible = true
     @state = 'insane'
     @setFrame(3)
   
   die: ->
+    for emitter in @scene.enemyEmitter
+      emitter.active = false
+    
     bloodParticle = @scene.add.particles('pixel')
     emitter = bloodParticle.createEmitter(
       x: @x

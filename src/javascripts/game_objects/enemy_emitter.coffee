@@ -6,6 +6,8 @@ class EnemyEmitter extends Phaser.GameObjects.GameObject
     
     @x = x
     @y = y
+    @active = false
+    @counter = Math.random() * 3000
     
   createEnemy: (key) ->
     enemy = @scene.add.gameObject(Enemy, @x, @y, 'aztec1', 0)

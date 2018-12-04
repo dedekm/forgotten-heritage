@@ -70,8 +70,13 @@ module.exports = ->
   @remainsGraphics = @add.gameObject(RemainsGraphics)
   
   @enemies = @add.group()
-  # @enemyEmitter = new EnemyEmitter(@, 15 * 16, 5 * 16)
-  # @enemyEmitter.createEnemy()
+  
+  @enemyEmitter = [
+    new EnemyEmitter(@, 7 * 16, 5 * 16),
+    new EnemyEmitter(@, 9 * 16, 25 * 16),
+    new EnemyEmitter(@, 27 * 16, 4 * 16),
+    new EnemyEmitter(@, 24 * 16, 22 * 16)
+  ]
   
   @hand = @add.image(22 * 16 - 8, 11 * 16 - 8, 'hand')
   @physics.add.existing(@hand)
